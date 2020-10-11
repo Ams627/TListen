@@ -16,7 +16,7 @@
 Win32 programs can output Debugging information to be capture by a Debugger using the Win32 Api function 
 https://docs.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw[`OutputDebugString`]
 
-By default, managed programs (e.g. those written in C#) call `OutputDebugString` when Debug.WriteLine and Trace.WriteLine 
+By default, managed programs (e.g. those written in C#) call `OutputDebugString` when `Debug.WriteLine` and `Trace.WriteLine` 
 are called.
 
 == DebugView
