@@ -92,7 +92,8 @@ namespace TListen
                     }
 
                     var nameToPrint = _printName ? $" {processName}" : "";
-                    Console.WriteLine($"{pid}{nameToPrint} {message}");
+                    var now = DateTime.Now;
+                    Console.WriteLine($"{now:HH:mm:ss} {pid}{nameToPrint} {message}");
                 }
             }
         }
