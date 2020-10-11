@@ -1,0 +1,42 @@
+:toc:
+:sectnums:
+:toclevels: 5
+:sectnumlevels: 5
+:showcomments:
+:xrefstyle: short
+:icons: font
+:source-highlighter: coderay
+:tick: &#x2714;
+:pound: &#xA3;
+
+= TListen: An OutputDebugString Trace Listener
+
+== Introduction
+
+Win32 programs can output Debugging information to be capture by a Debugger using the Win32 Api function 
+https://docs.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw[`OutputDebugString`]
+
+By default, managed programs (e.g. those written in C#) call `OutputDebugString` when Debug.WriteLine and Trace.WriteLine 
+are called.
+
+== DebugView
+
+Windows Sysinternals https://docs.microsoft.com/en-us/sysinternals/downloads/debugview[**DebugView**] can show traces
+from `OutputDebugString`.
+
+== TListen
+
+TListen is a **example** command-line program which listens to `OutputDebugString` traces from all or any processes and
+prints the strings output from those processes on the standard output. It includes the PID and optionally the processes
+name in the output.
+
+I put the word _example_ in bold at the top of this section, because this is just a quick hack. It 
+shouldn't be used for production purposes and I am not particularly interested in improving it.
+
+== Originality
+
+There is nothing original or clever in this program. 
+
+There are **lots** of `OutputDebugString` Trace Listeners available - e.g. https://github.com/smourier/TraceSpy[TraceSpy] from
+where I got the initial idea. Use TraceSpy if you want a graphical view of output from `OutputDebugString`.
+

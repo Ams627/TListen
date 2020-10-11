@@ -14,11 +14,13 @@ namespace TListen
         private string[] args;
         private const int OdsBufferSize = 4096;
         private readonly bool _regex;
+        private readonly bool _printName;
 
-        public DebugListener(string[] args, bool regex = false, bool name = true)
+        public DebugListener(string[] args, bool regex = false, bool printName = true)
         {
             this.args = args;
             this._regex = regex;
+            this._printName = printName;
         }
 
         internal void Listen()
@@ -42,6 +44,8 @@ namespace TListen
 
             var regexes = _regex && args.Any() ? args.Select(x => new Regex(x, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToArray() : new Regex[] { };
 
+            string processName;
+
             while (true)
             {
                 bufferReadyEvent.Set();
@@ -51,11 +55,14 @@ namespace TListen
                     bufferStream.Position = 0;
                     bufferStream.Read(pidBytes, 0, pidBytes.Length);
                     int pid = BitConverter.ToInt32(pidBytes, 0);
+                    processName = Process.GetProcessById(pid).ProcessName;
+
+                    // any arguments to the program means some kind of filter - either by name, PID or regex matches on the process name:
                     if (filter)
                     {
                         if (_regex)
                         {
-                            var processName = Process.GetProcessById(pid).ProcessName;
+                            
                             if (!regexes.Any(x=>x.Match(processName).Success))
                             {
                                 continue;
@@ -70,7 +77,6 @@ namespace TListen
                         }
                         else
                         {
-                            var processName = Process.GetProcessById(pid).ProcessName;
                             if (!processNames.Contains(processName))
                             {
                                 continue;
@@ -85,7 +91,8 @@ namespace TListen
                         continue;
                     }
 
-                    Console.WriteLine($"{pid} {message}");
+                    var nameToPrint = _printName ? $" {processName}" : "";
+                    Console.WriteLine($"{pid}{nameToPrint} {message}");
                 }
             }
         }

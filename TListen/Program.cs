@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System.Threading.Tasks;
-using System.IO.MemoryMappedFiles;
-using System.Threading;
 
 namespace TListen
 {
@@ -33,7 +27,7 @@ namespace TListen
                     var ordinaryArgs = args.Where(x => x[0] != '-');
                     var optionArgs = args.Where(x => x[0] == '-').ToHashSet();
                     var regex = optionArgs.Any() && optionArgs.Contains("-e");
-                    var excludeName = optionArgs.Any() && optionArgs.Contains("-x");
+                    var excludeName = !(optionArgs.Any() && optionArgs.Contains("-x"));
 
                     var listener = new DebugListener(args, regex, excludeName);
                     listener.Listen();
@@ -44,7 +38,7 @@ namespace TListen
                     if (e.HResult != ERROR_ALREADY_EXISTS)
                         throw;
 
-                    Console.WriteLine("There's already an ODS trace listener running on the machine.");
+                    Console.WriteLine("There's already an OutputDebugString Trace Listener running on the machine.");
                 }
 
             }
